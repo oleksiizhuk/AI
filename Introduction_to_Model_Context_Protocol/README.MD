@@ -286,3 +286,92 @@ connecting to full applications, you can:
 
 - This immediate feedback loop makes MCP server development much more efficient and helps catch issues early in the
   development process.
+
+# Implementing a client
+
+Now that we have our MCP server working, it's time to build the client side. The client is what allows our application
+code to communicate with the MCP server and access its functionality.
+
+# Understanding the Client Architecture
+
+In most real-world projects, you'll either implement an MCP client or an MCP server - not both. We're building both in
+this project just so you can see how they work together.
+
+The MCP client consists of two main components:
+
+- MCP Client - A custom class we create to make using the session easier
+- Client Session - The actual connection to the server (part of the MCP Python SDK)
+
+![instructor_a46l9irobhg0f5webscixp0bs_public_1749849286_09_-
+_006_-_Implementing_a_Client_02.1749849285884.png](image/instructor_a46l9irobhg0f5webscixp0bs_public_1749849286_09_-_006_-_Implementing_a_Client_02.1749849285884.png)
+
+The client session requires careful resource management - we need to properly clean up connections when we're done.
+That's why we wrap it in our own class that handles all the cleanup automatically.
+
+## How the Client Fits Into Our Application
+
+Remember our application flow diagram? The client is what enables our code to interact with the MCP server at two key
+points:
+
+![instructor_a46l9irobhg0f5webscixp0bs_public_1749849286_09_-
+_006_-_Implementing_a_Client_06.1749849286672.png](image/instructor_a46l9irobhg0f5webscixp0bs_public_1749849286_09_-_006_-_Implementing_a_Client_06.1749849286672.png)
+
+Our CLI code uses the client to:
+
+- Get a list of available tools to send to Claude
+- Execute tools when Claude requests them
+
+## Implementing Core Client Functions
+
+We need to implement two essential functions: ```list_tools()``` and ```call_tool().```
+
+## List Tools Function
+
+This function gets all available tools from the MCP server:
+
+```aiignore
+async def list_tools(self) -> list[types.Tool]:
+    result = await self.session().list_tools()
+    return result.tools
+```
+
+It's straightforward - we access our session (the connection to the server), call the built-in list_tools () method, and
+return the tools from the result.
+
+## Call Tool Function
+
+```aiignore
+async def call_tool(
+    self, tool_name: str, tool_input: dict
+) -> types.CallToolResult | None:
+    return await self.session().call_tool(tool_name, tool_input)
+```
+
+We pass the tool name and input parameters (provided by Claude) to the server and return the result.
+
+## Testing the Client
+
+```
+uv run mcp_client.py
+```
+
+## Putting It All Together
+
+Once the client functions are implemented, you can test the complete flow by running your main application:
+
+```
+uv run main.py
+```
+
+Try asking: "What is the contents of the report.pdf document?"
+
+Here's what happens behind the scenes:
+
+- Your application uses the client to get available tools
+- These tools are sent to Claude along with your question
+- Claude decides to use the read_doc_contents tool
+- Your application uses the client to execute that tool
+- The result is returned to Claude, who then responds to you
+
+The client acts as the bridge between your application logic and the MCP server's functionality, making it easy to
+integrate powerful tools into your AI workflows.
