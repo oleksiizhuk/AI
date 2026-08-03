@@ -439,4 +439,5 @@ Two simple rules cover most of this:
   and MCP servers first.
 - When you build one, package your .claude the moment it works. One manifest, one install.
 -
+
 That's the whole point. One installable unit, and the setup you trust reaches your entire team.

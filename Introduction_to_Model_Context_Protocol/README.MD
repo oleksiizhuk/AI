@@ -446,4 +446,7 @@ These are high-level guidelines to help you choose the right primitive for your 
 different part of your application stack - tools serve the model, resources serve your app, and prompts serve your
 users.
 
+![instructor_a46l9irobhg0f5webscixp0bs_public_1749849326_09_-
+_011_-_MCP_Review_00.1749849326738.png](image/instructor_a46l9irobhg0f5webscixp0bs_public_1749849326_09_-_011_-_MCP_Review_00.1749849326738.png)
+
 
