@@ -56,6 +56,22 @@ def edit_document(
     docs[doc_id] = docs[doc_id].replace(old_str, new_str)
 
 
+@mcp.tool(
+    name="create_document",
+    description="Create a new document with the given id and contents",
+)
+def create_document(
+    doc_id: str = Field(
+        description="Id of the document to create, e.g. 'notes.md'"
+    ),
+    content: str = Field(description="Initial contents of the document"),
+):
+    if doc_id in docs:
+        raise ValueError(f"Doc with id {doc_id} already exists")
+
+    docs[doc_id] = content
+
+
 @mcp.resource("docs://documents", mime_type="application/json")
 def list_docs() -> list[str]:
     return list(docs.keys())

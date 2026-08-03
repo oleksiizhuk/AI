@@ -375,3 +375,24 @@ Here's what happens behind the scenes:
 
 The client acts as the bridge between your application logic and the MCP server's functionality, making it easy to
 integrate powerful tools into your AI workflows.
+
+# Defining resources
+
+# Accessing resources
+
+# How Prompts Work
+
+Prompts define a set of user and assistant messages that clients can use. They should be high-quality, well-tested, and
+relevant to your MCP server's purpose. The workflow is:
+
+- Write and evaluate a prompt relevant to your server's functionality
+- Define the prompt in your MCP server using the @mcp.prompt decorator
+- Clients can request the prompt at any time
+- Arguments provided by the client become keyword arguments in your prompt function
+- The function returns formatted messages ready for the AI model
+
+This system creates reusable, parameterized prompts that maintain consistency while allowing customization through
+variables. It's particularly useful for complex workflows where you want to ensure the AI receives properly structured
+instructions every time.
+
+
